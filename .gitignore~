@@ -1,6 +1,5 @@
-# Folders just to play around
+# Folder just to play around
 test/
-out/
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
