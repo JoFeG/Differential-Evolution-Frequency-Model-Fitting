@@ -36,7 +36,7 @@ def parse_arguments():
         "--input",
         action = "store",
         required = True,
-        help = "path to *.csv file with data",
+        help = "path to *.csv file with data.",
     )
     parser.add_argument(
         "-o",
