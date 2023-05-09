@@ -6,7 +6,7 @@ from scipy import signal
 
 def main():
     args = parse_arguments()
-    print("lalala completar...")
+    print("lalala falta completar...")
     
 def objective_function(x, args):
     model, Ts, P0, x0, real_freq = args
