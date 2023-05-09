@@ -8,25 +8,24 @@ def main():
     args = parse_arguments()
     print("lalala completar...")
     
-#ARREGLAR AQUI, NO HACE FALTA PASAR EL ARREGLO DE TIEMPOS!!
-def objective_fuction(x, args):
-    model = args(0)
-    Ts = args(1)
-    real_frec = args(2)
-    time = args(3)
+def objective_function(x, args):
+    model, Ts, P0, x0, real_freq = args
+    # Ojo con las unidades! 
+    # El Ts del modelo y de real_frec tienen que ser el mismo!
     
     if model == 1:
-        print()
-    
+        sys = modelo_1(x, Ts)
+        
+    sim_power = P0 * np.repeat(1, real_freq.shape)
+    sim = signal.dlsim(sys, sim_power, x0 = real_freq[0])
+    sim_freq = sim[1].ravel()
+        
+    ssd = np.sum((sim_freq - real_freq)**2)
+    return ssd
 
 def modelo_1(model_params, Ts):
-    Ta = model_params[0]
-    Tb = model_params[1]
-    Tc = model_params[2]
-    Td = model_params[3]
-    K  = model_params[4]
-    Kd = model_params[5]
-    
+    Ta, Tb, Tc, Td, K, Kd = model_params
+
     A = np.array([[0, 0, 0, -1/K], [Kd/Tb, 0, -1/Tb, 0], [Kd*Td/Tb,  1,  -Tc/Tb,  0], [0,  0,  1/Ta, -1/Ta]])
     B = np.array([[-1/K],[0],[0], [0]])
     C = np.array([[1,0,0,0]]);
