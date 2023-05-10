@@ -9,7 +9,7 @@ def main():
     print("lalala falta completar...")
     
 def objective_function(x, args):
-    model, Ts, P0, x0, real_freq = args
+    model, Ts, P0, real_freq = args
     # Ojo con las unidades! 
     # El Ts del modelo y de real_frec tienen que ser el mismo!
     
