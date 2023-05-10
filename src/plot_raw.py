@@ -43,7 +43,7 @@ def parse_arguments():
         "--output",
         action = "store",
         default = "./plot_raw.png",
-        help = "path of plot, shoul end in *.png",
+        help = "path of plot, should end in *.png",
     )
 
     return parser.parse_args()
