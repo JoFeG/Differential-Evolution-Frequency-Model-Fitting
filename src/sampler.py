@@ -7,11 +7,14 @@ from scipy import signal
 
 def main():
     args = parse_arguments()
-    sampler(args.input, float(args.time), args.output)
+    df = sampler(args.input, float(args.time))
+    df.to_csv(args.output, index=False, float_format='%.6g')
     
-def sampler(input_path, Ts, output_path):
+    
+def sampler(input_path, Ts):
     df = pd.read_csv(input_path)
-    delta_i = int(Ts / 0.02) # This asumes 0.02 sampling time in the raw file!
+    # This asumes 0.02 sampling time in the raw file!
+    delta_i = int(Ts / 0.02) 
     
     freq = df[df.index % delta_i == 0]["CIO"]
     power =  df[df.index % delta_i == 0]["Potencia"]
@@ -19,10 +22,9 @@ def sampler(input_path, Ts, output_path):
     event = (df[df.index % delta_i == 0].index >= df["Inicio"][0]).astype(int)
 
     d = {'time':time, 'freq':freq, 'power':power, 'event':event}
-
-    pd.DataFrame(data=d).to_csv(output_path, index=False, float_format='%.6g')
+    df = pd.DataFrame(data=d)
     
-    return 1
+    return df
 
 
 def parse_arguments():
