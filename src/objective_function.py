@@ -21,6 +21,7 @@ def objective_function(x, args):
     sim_freq = sim[1].ravel()
         
     ssd = np.sum((sim_freq - real_freq)**2)
+    #print(ssd)
     return ssd
 
 def modelo_1(model_params, Ts):
