@@ -24,7 +24,7 @@ def plot_raw(input_path, fig_size = (16, 7)):
     ## Plots CL_*
     plt.plot(data, alpha=.5)
     plt.legend(["Inicio Evento"]+freq)
-    plt.title("Frecuencia ...")
+    plt.title("Frecuencia " + input_path)
     return fig
     
 
