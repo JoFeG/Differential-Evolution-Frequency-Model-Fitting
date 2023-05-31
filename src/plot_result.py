@@ -28,13 +28,15 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     real_time = df["time"].to_numpy()
     real_freq = df["freq"].to_numpy()
     event_time = df["time"][df["event"]==1].to_numpy()
-    sim_time = np.arange(event_time[0],event_time[-1],Ts)
+    #sim_time = np.arange(event_time[0],event_time[-1],Ts) # Esto genera un bug!
+    sim_time = np.linspace(event_time[0],event_time[-1],num=sim_freq.size)
 
     fig = plt.figure(figsize=fig_size)
     
     plt.plot(real_time,real_freq)
     plt.axvspan(event_time.min(),event_time.max(), alpha=.1)
-    plt.plot(sim_time,sim[1])
+    
+    plt.plot(sim_time,sim_freq)
 
     return fig
     
