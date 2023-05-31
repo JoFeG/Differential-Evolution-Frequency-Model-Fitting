@@ -2,12 +2,15 @@
 
 import os 
 import argparse
+import pickle
 #import threading
 
 from scipy.optimize import differential_evolution
+from matplotlib import pyplot as plt
 
 from sampler import sampler
 from objective_function import objective_function
+from plot_result import plot_result
 
 def main():
     args = parse_arguments()
@@ -17,17 +20,33 @@ def main():
     event_time = float(args.event_time)
     df = sampler(args.input_file, Ts, event_time=event_time)
     
+    
     P0 = df["power"][0] / 1000
     
     event_freq = df["freq"][df["event"]==1].to_numpy()
     bounds = [(0.00001, 1000) for i in range(6)] ## CHECK
     arguments = (model, Ts, P0, event_freq)
     result = differential_evolution(objective_function, bounds, args=(arguments,))
-    print(result.x)
+    
     
     ## SAVE REPORT
+    head, tail = os.path.split(args.input_file)
+    pre, ext = os.path.splitext(tail)
+    output_path = os.path.join(args.output_dir, pre + "_result.p")
     
+    pickle.dump(result, open(output_path, "wb" ) )
+
     ## SAVE RESULT PLOT
+    fig = plot_result(df, arguments, result.x)
+    plt.text(0, min(event_freq), repr(result), fontsize=10, fontfamily='monospace')
+    plt.title(tail)
+    
+    output_path = os.path.join(args.output_dir, pre + "_result.png")
+    plt.savefig(output_path)
+    
+    print(tail)
+    print(result)
+    print("------------------------------------------------------------------------------------")
     
 def parse_arguments():
     parser = argparse.ArgumentParser(".")

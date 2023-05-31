@@ -3,9 +3,11 @@
 import argparse
 import pandas as pd
 import numpy as np
-from scipy import signal
 from matplotlib import pyplot as plt
-from .objective_function import modelo_1
+from scipy import signal
+
+
+from objective_function import modelo_1
 
 def main():
     args = parse_arguments()
@@ -33,9 +35,7 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     plt.plot(real_time,real_freq)
     plt.axvspan(event_time.min(),event_time.max(), alpha=.1)
     plt.plot(sim_time,sim[1])
-    
 
-    
     return fig
     
 
