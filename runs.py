@@ -11,7 +11,7 @@ def main():
         with os.scandir(args.input_dir) as entries:
             for entry in entries:
                 if ".csv" in entry.name:
-                    input_path = os.path.join(args.input_dir,entry.name)
+                    input_path = os.path.join(args.input_dir, entry.name)
                     pre, ext = os.path.splitext(entry.name)
                     output_path = os.path.join(args.output_dir, pre + "_raw.png")
                     source_path = os.path.join("src","plot_raw.py")
@@ -22,7 +22,7 @@ def main():
         with os.scandir(args.input_dir) as entries:
             for entry in entries:
                 if ".csv" in entry.name:
-                    input_path = args.input_dir + entry.name
+                    input_path = os.path.join(args.input_dir, entry.name)
                     source_path = os.path.join("src","de_run.py")
                     os.system(source_path + " -i " + input_path)
     
