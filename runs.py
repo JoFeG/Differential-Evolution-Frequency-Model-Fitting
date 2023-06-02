@@ -11,9 +11,11 @@ def main():
         with os.scandir(args.input_dir) as entries:
             for entry in entries:
                 if ".csv" in entry.name:
-                    input_path = args.input_dir + entry.name
-                    output_path = args.output_dir + "/" + entry.name[0:-3] + "png"
+                    input_path = os.path.join(args.input_dir,entry.name)
+                    pre, ext = os.path.splitext(entry.name)
+                    output_path = os.path.join(args.output_dir, pre + "_raw.png")
                     os.system("./src/plot_raw.py -i " + input_path + " -o " + output_path)
+
                     
     if args.differential_evolution:
         with os.scandir(args.input_dir) as entries:
