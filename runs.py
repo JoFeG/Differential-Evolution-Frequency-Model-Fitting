@@ -14,7 +14,8 @@ def main():
                     input_path = os.path.join(args.input_dir,entry.name)
                     pre, ext = os.path.splitext(entry.name)
                     output_path = os.path.join(args.output_dir, pre + "_raw.png")
-                    os.system("./src/plot_raw.py -i " + input_path + " -o " + output_path)
+                    source_path = os.path.join("src","plot_raw.py")
+                    os.system(source_path + " -i " + input_path + " -o " + output_path)
 
                     
     if args.differential_evolution:
@@ -22,7 +23,8 @@ def main():
             for entry in entries:
                 if ".csv" in entry.name:
                     input_path = args.input_dir + entry.name
-                    os.system("./src/de_run.py -i " + input_path)
+                    source_path = os.path.join("src","de_run.py")
+                    os.system(source_path + " -i " + input_path)
     
 def parse_arguments():
     parser = argparse.ArgumentParser(".")
