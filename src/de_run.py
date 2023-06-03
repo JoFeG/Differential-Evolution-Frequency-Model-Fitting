@@ -26,7 +26,13 @@ def main():
     event_freq = df["freq"][df["event"]==1].to_numpy()
     bounds = [(0.00001, 1000) for i in range(6)] ## CHECK
     arguments = (model, Ts, P0, event_freq)
-    result = differential_evolution(objective_function, bounds, args=(arguments,), disp=True)
+    
+    popsize = 30
+    tol = 0.01
+    mutation = (0.5, 1.5)
+    recombination = 0.6
+    
+    result = differential_evolution(objective_function, bounds, args=(arguments,))
     
     
     ## SAVE REPORT
