@@ -26,7 +26,7 @@ def main():
     event_freq = df["freq"][df["event"]==1].to_numpy()
     bounds = [(0.00001, 1000) for i in range(6)] ## CHECK
     arguments = (model, Ts, P0, event_freq)
-    result = differential_evolution(objective_function, bounds, args=(arguments,))
+    result = differential_evolution(objective_function, bounds, args=(arguments,), disp=True)
     
     
     ## SAVE REPORT
