@@ -34,7 +34,7 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     fig = plt.figure(figsize=fig_size)
     
     plt.plot(real_time,real_freq)
-    plt.axvspan(event_time.min(),event_time.max(), alpha=.1)
+    plt.axvspan(event_time.min(), event_time.max(), alpha=.1)
     
     plt.plot(sim_time,sim_freq)
 

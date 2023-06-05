@@ -32,12 +32,50 @@ def main():
     mutation = (0.5, 1.5)
     recombination = 0.6
     
-    result = differential_evolution(objective_function, bounds, args=(arguments,))
+    ## Collect information for convergence plot 
+    obj_fun_vavues = []
+    best_x_iterk = []
+    conv_prop_iterk = []
+    def callback(xk, convergence):
+        ## WARNING: is this ok on parallelization? convergence plots could be wrong... (to check)
+        try: 
+            obj_fun_vavues.append(objective_function(xk, arguments))
+            best_x_iterk.append(xk)
+            conv_prop_iterk.append(convergence)
+        except NameError:
+            print("missing some of the arrays: obj_fun_vavues, best_x_iterk, conv_prop_iterk")
+
+    result = differential_evolution(
+        objective_function, 
+        bounds, 
+        args=(arguments,),
+        callback = callback,
+        tol = tol,
+        popsize = popsize,      
+        mutation = mutation, 
+        recombination = recombination
+    )
     
-    
-    ## SAVE REPORT
+    ## FOR OUTPUTS
     head, tail = os.path.split(args.input_file)
     pre, ext = os.path.splitext(tail)
+    
+    ## CONVERGENCE PLOT
+    fig, ax1 = plt.subplots(figsize=(16, 7))
+    ax1.plot(obj_fun_vavues, label = "Objective function value")
+    ax2 = ax1.twinx()
+    ax2.plot(conv_prop_iterk, color = 'red', alpha = .5, label = "Proportion of population convergence ")
+    ax1.legend(loc =  'upper left')
+    ax2.legend(loc = 'upper right')
+    plt.title(tail)
+    ax2.text(50, .5, f"model = {model}\nTs = {Ts}\nevent_time = {event_time}\n\ntol = {tol}\npopsize = {popsize}\nmutation = {mutation}\nrecombination = {recombination}", fontsize=10, fontfamily='monospace' )
+    
+    output_path = os.path.join(args.output_dir, pre + "_convergence.png")
+    plt.savefig(output_path)
+  
+    
+    ## SAVE REPORT
+    
     output_path = os.path.join(args.output_dir, pre + "_result.p")
     
     pickle.dump(result, open(output_path, "wb" ) )
@@ -53,7 +91,9 @@ def main():
     print(tail)
     print(result)
     print("------------------------------------------------------------------------------------")
-    
+
+
+
 def parse_arguments():
     parser = argparse.ArgumentParser(".")
 
