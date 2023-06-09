@@ -1,10 +1,11 @@
 # Differential-Evolution-Frequency-Model-Fitting
----
+
+
+### Configuracion automatica via iracepy
 
 Ver https://github.com/auto-optimization/iracepy para detayes de instalacion de irace.
 
----
-La energía cinética de los datos en `./data/test/`:
+### Energía cinética de los datos en `./data/test/`:
 
 `13/02/2023  14:08 -> K = 45.7 GWs`
 
