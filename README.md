@@ -1,9 +1,9 @@
 # Differential-Evolution-Frequency-Model-Fitting
 
 
-## Configuracion automatica via iracepy
+## Configuración automática via iracepy
 
-Ver https://github.com/auto-optimization/iracepy para detayes de instalacion de irace.
+Ver https://github.com/auto-optimization/iracepy para detalles de instalación de irace.
 
 ## Energía cinética de los datos en `./data/test/`:
 
