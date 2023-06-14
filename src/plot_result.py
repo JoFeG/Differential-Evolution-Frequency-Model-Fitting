@@ -37,7 +37,9 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     plt.axvspan(event_time.min(), event_time.max(), alpha=.1)
     
     plt.plot(sim_time,sim_freq)
-
+    plt.xlabel("tiempo relativo [seg]")
+    plt.ylabel("frecuencia [Hz]")
+    
     return fig
     
 

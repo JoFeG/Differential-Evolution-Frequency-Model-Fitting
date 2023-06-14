@@ -2,6 +2,7 @@
 
 import argparse
 import pandas as pd
+import numpy as np
 from matplotlib import pyplot as plt
 
 def main():
@@ -16,18 +17,21 @@ def plot_raw(input_path, fig_size = (16, 7)):
     ## No todos los archivos tienen las mismas columnas CL_*
     ## La columna CIO es la media de las que si estan
     freq = [x for x in df.columns if "CL" in x]
-    data = df[freq]
+    data = df[freq].to_numpy()
+    time = 0.02 * np.arange(data.shape[0])
+    
     
     ## Linea inicio evento
-    plt.axvline(x = df["Inicio"][0], color = 'r')
+    plt.axvline(x = 0.02 * df["Inicio"][0], color = 'r')
     
     ## Plots CL_*
-    plt.plot(data, alpha=.5)
+    plt.plot(time, data, alpha=.5)
     plt.legend(["Inicio Evento"]+freq)
     plt.title("Frecuencia " + input_path)
+    plt.xlabel("tiempo relativo [seg]")
+    plt.ylabel("frecuencia [Hz]")
     return fig
     
-
 def parse_arguments():
     parser = argparse.ArgumentParser("Plot raw data.")
 
