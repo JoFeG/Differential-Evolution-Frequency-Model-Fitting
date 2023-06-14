@@ -54,7 +54,7 @@ def main():
     bounds = [(0.00001, 1000) for i in range(6)] ## CHECK
     arguments = (model, Ts, P0, event_freq)
     
-    if args.parameters == "":
+    if args.parameters != "":
         param_strs = args.parameters.split(",") 
         popsize = int(param_strs[0])
         mutation = float(param_strs[1])
