@@ -13,8 +13,8 @@ def objective_function(x, args):
     # Ojo con las unidades! 
     # El Ts del modelo y de real_frec tienen que ser el mismo!
     
-    if model == 1:
-        sys = modelo_1(x, Ts)
+    if model == "c":
+        sys = modelo_c(x, Ts)
         
     sim_power = P0 * np.repeat(1, real_freq.shape)
     sim = signal.dlsim(sys, sim_power, x0 = real_freq[0])
@@ -24,7 +24,7 @@ def objective_function(x, args):
     #print(ssd)
     return ssd
 
-def modelo_1(model_params, Ts):
+def modelo_c(model_params, Ts):
     Ta, Tb, Tc, Td, K, Kd = model_params
 
     A = np.array([[0, 0, 0, -1/K], [Kd/Tb, 0, -1/Tb, 0], [Kd*Td/Tb,  1,  -Tc/Tb,  0], [0,  0,  1/Ta, -1/Ta]])

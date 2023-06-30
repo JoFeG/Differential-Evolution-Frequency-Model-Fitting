@@ -51,6 +51,11 @@ def main():
     P0 = df["power"][0] / 1000
     
     event_freq = df["freq"][df["event"]==1].to_numpy()
+    
+    #################################################################### OJO
+    event_freq = event_freq - 50
+    #################################################################### OJO
+    
     bounds = [(0.00001, 1000) for i in range(6)] ## CHECK
     arguments = (model, Ts, P0, event_freq)
     

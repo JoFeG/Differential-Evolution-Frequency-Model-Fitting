@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from scipy import signal
 
 
-from objective_function import modelo_1
+from objective_function import modelo_c
 
 def main():
     args = parse_arguments()
@@ -18,8 +18,8 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     
     model, Ts, P0, real_freq = args
     
-    if model == 1:
-        sys = modelo_1(x, Ts)
+    if model == "c":
+        sys = modelo_c(x, Ts)
         
     sim_power = P0 * np.repeat(1, real_freq.shape)
     sim = signal.dlsim(sys, sim_power, x0 = real_freq[0])
@@ -27,6 +27,11 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     
     real_time = df["time"].to_numpy()
     real_freq = df["freq"].to_numpy()
+    
+    #################################################################### OJO
+    real_freq = real_freq - 50
+    #################################################################### OJO
+    
     event_time = df["time"][df["event"]==1].to_numpy()
     #sim_time = np.arange(event_time[0],event_time[-1],Ts) # Esto genera un bug!
     sim_time = np.linspace(event_time[0],event_time[-1],num=sim_freq.size)

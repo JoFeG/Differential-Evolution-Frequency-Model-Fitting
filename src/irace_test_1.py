@@ -11,7 +11,7 @@ from de_run import objective_function
 def target_runner(experiment, scenario):
     
     #Latter this shoud be a aparameter!
-    model = 1
+    model = "c"
     df = pd.read_csv(scenario["instances"][0])
     Ts = df["time"][1]
     event_time = Ts*(np.sum(df["event"][df["event"]==1].to_numpy())-1)    
