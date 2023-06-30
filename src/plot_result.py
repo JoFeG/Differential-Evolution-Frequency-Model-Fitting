@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from scipy import signal
 
 
-from objective_function import modelo_c
+from models import modelo_c
 
 def main():
     args = parse_arguments()

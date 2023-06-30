@@ -10,7 +10,7 @@ from scipy import signal
 from scipy.optimize import differential_evolution
 from matplotlib import pyplot as plt
 
-
+from models import modelo_c
 from plot_result import plot_result
 
 def objective_function(x, args):
@@ -27,18 +27,6 @@ def objective_function(x, args):
     #print(ssd)
     return ssd
 
-def modelo_c(model_params, Ts):
-    Ta, Tb, Tc, Td, K, Kd = model_params
-
-    A = np.array([[0, 0, 0, -1/K], [Kd/Tb, 0, -1/Tb, 0], [Kd*Td/Tb,  1,  -Tc/Tb,  0], [0,  0,  1/Ta, -1/Ta]])
-    B = np.array([[-1/K],[0],[0], [0]])
-    C = np.array([[1,0,0,0]]);
-    D = np.array([[0]]);  
-    
-    sys = signal.StateSpace(A,B,C,D)
-    sys_k = sys.to_discrete(Ts)
-    return sys_k
-
 def main():
     args = parse_arguments()
     
@@ -51,6 +39,11 @@ def main():
     P0 = df["power"][0] / 1000
     
     event_freq = df["freq"][df["event"]==1].to_numpy()
+    
+    #################################################################### OJO
+    event_freq = event_freq - 50
+    #################################################################### OJO
+    
     bounds = [(0.00001, 1000) for i in range(6)] ## CHECK
     arguments = (model, Ts, P0, event_freq)
     
