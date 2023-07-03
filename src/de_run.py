@@ -10,14 +10,18 @@ from scipy import signal
 from scipy.optimize import differential_evolution
 from matplotlib import pyplot as plt
 
-from models import modelo_c
+import models as mdl
 from plot_result import plot_result
 
 def objective_function(x, args):
     model, Ts, P0, real_freq = args
     
-    if model == "c":
-        sys = modelo_c(x, Ts)
+    if model == "b":
+        sys = mdl.modelo_b(x, Ts)
+    elif model == "c":
+        sys = mdl.modelo_c(x, Ts)
+    elif model == "cc":
+        sys = mdl.modelo_cc(x, Ts)
         
     sim_power = P0 * np.repeat(1, real_freq.shape)
     sim = signal.dlsim(sys, sim_power, x0 = real_freq[0])
@@ -40,7 +44,7 @@ def main():
     
     event_freq = df["delta_freq"][df["event"]==1].to_numpy()
     
-    bounds = [(0.00001, 1000) for i in range(6)] ## CHECK
+    bounds = [(0.00001, 1000) for i in range(mdl.params[model])] ## CHECK
     arguments = (model, Ts, P0, event_freq)
     
     if args.parameters != "":
@@ -114,6 +118,7 @@ def main():
         ## SAVE RESULT PLOT
         fig = plot_result(df, arguments, result.x)
         plt.text(0, min(event_freq), repr(result), fontsize=10, fontfamily='monospace')
+        plt.text(event_time, (max(event_freq)+min(event_freq))/2, f"model = {model}\nTs = {Ts}\nevent_time = {event_time}\n\ntol = {tol}\npopsize = {popsize}\nmutation = {mutation}\nrecombination = {recombination}", fontsize=10, fontfamily='monospace' )
         plt.title(tail)
 
         output_path = os.path.join(args.output_dir, pre + "_result.png")

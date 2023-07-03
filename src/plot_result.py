@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from scipy import signal
 
 
-from models import modelo_c
+import models as mdl
 
 def main():
     args = parse_arguments()
@@ -18,8 +18,12 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     
     model, Ts, P0, real_freq = args
     
-    if model == "c":
-        sys = modelo_c(x, Ts)
+    if model == "b":
+        sys = mdl.modelo_b(x, Ts)
+    elif model == "c":
+        sys = mdl.modelo_c(x, Ts)
+    elif model == "cc":
+        sys = mdl.modelo_cc(x, Ts)
         
     sim_power = P0 * np.repeat(1, real_freq.shape)
     sim = signal.dlsim(sys, sim_power, x0 = real_freq[0])

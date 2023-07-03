@@ -1,6 +1,11 @@
 import numpy as np
 from scipy import signal
 
+params = {
+    "b"  : 5,
+    "c"  : 6,
+    "cc" : 5
+}
 
 def modelo_b(model_params, Ts):
     Ta, Tb, Tc, H, Kd = model_params
