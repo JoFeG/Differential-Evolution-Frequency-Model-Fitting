@@ -18,7 +18,11 @@ Aggregated files are sampled each `-t` seconds ($0.3$ by default). Differences t
 
 ## Models
 
-
+Currently three models are available. Two models from [1] (p19) given by the diagram  
+![diagrama modelo](./img/diag_aG.png)  
+Whith correspondig functions; `model b` $G(s) = \frac{1+T_cs}{1+T_bs}$, and `model c` $G(s) = \frac{1+T_ds}{1+T_cs+T_bs^2}$. And a `model cc` whith the latter function but omiting the $T_a$ block as in the diagram  
+![diagrama modelo](./img/diag_G.png)  
+In all cases we relabel the constant $H=\frac{f_0}{2K}$ for ease of notation.
 ## Fitting
 
 To run [differential evolution](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.differential_evolution.html) over an aggregated file do:  
