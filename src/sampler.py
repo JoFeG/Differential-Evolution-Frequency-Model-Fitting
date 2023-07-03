@@ -1,29 +1,44 @@
 #!/usr/bin/env python
 
+import os 
 import argparse
 import pandas as pd
 import numpy as np
 from scipy import signal
 
 def main():
-    args = parse_arguments()
-    df = sampler(args.input, float(args.sampling_time), float(args.event_time))
-    df.to_csv(args.output, index=False, float_format='%.6g')
+    args = parse_arguments()    
+    df = sampler(
+        args.input, 
+        float(args.sampling_time), 
+        float(args.event_time),
+        float(args.nominal_frequency)
+    )
+    
+    if os.path.isdir(args.output):
+        head, tail = os.path.split(args.input)
+        pre, ext = os.path.splitext(tail)
+        output_path = os.path.join(args.output, pre + "_sampled.csv")
+    else:
+        output_path = args.output
+    df.to_csv(output_path, index=False, float_format='%.6g')
     
     
-def sampler(input_path, Ts, event_time=0):
+def sampler(input_path, Ts, event_time=0, f0=50):
     df = pd.read_csv(input_path)
     # WARNING: This assumes 0.02 sampling time in the raw file!
     delta_i = int(Ts / 0.02) 
     
-    freq = df[df.index % delta_i == 0]["CIO"]
+    delta_freq = df[df.index % delta_i == 0]["CIO"] - f0
     power =  df[df.index % delta_i == 0]["Potencia"]
-    time = Ts * np.arange(freq.size)
+    time = Ts * np.arange(delta_freq.size)
     event = (df[df.index % delta_i == 0].index >= df["Inicio"][0]).astype(int)
-
+    nominal_frequency = np.repeat(f0, delta_freq.size)
+    
+    
     if event_time > 0:
         event[np.argmax(event) + int(np.ceil(event_time / Ts)):] = 0
-    d = {'time':time, 'freq':freq, 'power':power, 'event':event}
+    d = {'time':time, 'delta_freq':delta_freq, 'event':event, 'power':power, 'f0':nominal_frequency}
     df = pd.DataFrame(data=d)
     
     return df
@@ -44,7 +59,7 @@ def parse_arguments():
         "--output",
         action = "store",
         default = "out.csv",
-        help = "path of output file, should end in *.csv",
+        help = "path of output file, should end in *.csv or be a directory",
     )
     parser.add_argument(
         "-st",
@@ -59,6 +74,13 @@ def parse_arguments():
         action = "store",
         default = "0",
         help = "duration of the event in seconds",
+    )
+    parser.add_argument(
+        "-nf",
+        "--nominal-frequency",
+        action = "store",
+        default = "50",
+        help = "nominal system electrical frequency f0",
     )
     
     return parser.parse_args()
