@@ -26,11 +26,7 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     sim_freq = sim[1].ravel()
     
     real_time = df["time"].to_numpy()
-    real_freq = df["freq"].to_numpy()
-    
-    #################################################################### OJO
-    real_freq = real_freq - 50
-    #################################################################### OJO
+    real_freq = df["delta_freq"].to_numpy()
     
     event_time = df["time"][df["event"]==1].to_numpy()
     #sim_time = np.arange(event_time[0],event_time[-1],Ts) # Esto genera un bug!
@@ -42,8 +38,8 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     plt.axvspan(event_time.min(), event_time.max(), alpha=.1)
     
     plt.plot(sim_time,sim_freq)
-    plt.xlabel("tiempo relativo [seg]")
-    plt.ylabel("frecuencia [Hz]")
+    plt.xlabel("t [seg]")
+    plt.ylabel("Δf [Hz]")
     
     return fig
     
