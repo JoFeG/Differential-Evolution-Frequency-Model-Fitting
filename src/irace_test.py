@@ -16,7 +16,7 @@ def target_runner(experiment, scenario):
     Ts = df["time"][1]
     event_time = Ts*(np.sum(df["event"][df["event"]==1].to_numpy())-1)    
     P0 = df["power"][0] / 1000
-    event_freq = df["freq"][df["event"]==1].to_numpy()
+    event_freq = df["delta_freq"][df["event"]==1].to_numpy()
     bounds = [(0.00001, 1000) for i in range(6)] ## CHECK
     arguments = (model, Ts, P0, event_freq)
     
@@ -57,7 +57,8 @@ popsize mutation recombination
 
 # OJO CON ESTE PATH ABSOLUTO DESDE LA CARPETA BASE DEL GIT
 # ¿Como especificar mas de una? randomizar a mano dentro del target_runner???
-instances = ["test/test.csv"]
+#instances = ["test/test_irace/test.csv"]
+instances = ["test/test_irace/2021_05_02-16_44_00_sampled.csv"]
 
 
 # See https://mlopez-ibanez.github.io/irace/reference/defaultScenario.html
