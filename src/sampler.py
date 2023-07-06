@@ -72,7 +72,7 @@ def parse_arguments():
         "-et",
         "--event-time",
         action = "store",
-        default = "0",
+        default = "30",
         help = "duration of the event in seconds",
     )
     parser.add_argument(
