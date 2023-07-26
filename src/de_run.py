@@ -40,11 +40,11 @@ def main():
     event_time = Ts*(np.sum(df["event"][df["event"]==1].to_numpy())-1)
     
         
-    P0 = df["power"][0] / 1000
+    P0 = df["power"][0] / 1000 # esto en realidad es ΔP_k en la notacion del modelo: que unidades tiene??
     
     event_freq = df["delta_freq"][df["event"]==1].to_numpy()
     
-    bounds = [(0.00001, 1000) for i in range(mdl.params[model])] ## CHECK
+    bounds = [(0.00001, 1000) for i in range(mdl.params[model])] ## CHECK THIS SOLUTION
     arguments = (model, Ts, P0, event_freq)
     
     if args.parameters != "":
