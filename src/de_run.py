@@ -89,7 +89,8 @@ def main():
         tol = tol,
         popsize = popsize,      
         mutation = mutation, 
-        recombination = recombination
+        recombination = recombination,
+        polish=False
     )
     
     ## FOR OUTPUTS

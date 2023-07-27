@@ -1,8 +1,0 @@
-Grado Polinomio,4.0
-P [MW],154.0
-K [GWs],39.7288
-Kd [GW/Hz],2.0522
-Ta [s],0.0002
-Tb [s],0.0
-Tc [s],50.0
-Td [s],19.5384

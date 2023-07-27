@@ -23,6 +23,7 @@ def main():
         output_path = args.output
     df.to_csv(output_path, index=False, float_format='%.6g')
     
+
     
 def sampler(input_path, Ts, event_time=0, f0=50):
     df = pd.read_csv(input_path)
@@ -40,6 +41,17 @@ def sampler(input_path, Ts, event_time=0, f0=50):
         event[np.argmax(event) + int(np.ceil(event_time / Ts)):] = 0
     d = {'time':time, 'delta_freq':delta_freq, 'event':event, 'power':power, 'f0':nominal_frequency}
     df = pd.DataFrame(data=d)
+    df = df.reset_index()
+    
+    ################ RESET EVENT START ################################
+    freq = df.delta_freq.to_numpy()
+    diff = freq[2:] - freq[:-2]
+    tol = -0.01
+    first = np.where(diff < tol)[0][0]
+    if df.delta_freq[first]<df.delta_freq[first+1]:
+        first = first + 1
+    df.loc[(df.event==1)&(df.index < first),"event"]=0
+    ###################################################################
     
     return df
 
