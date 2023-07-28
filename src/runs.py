@@ -36,7 +36,7 @@ def main():
                     input_path = os.path.join(args.input_dir, entry.name)
                     source_path = os.path.join("src","de_run.py")
                     print("python " + source_path + " -i " + input_path + " -o " + args.output_dir)
-                    os.system("python " + source_path + " -i " + input_path + " -o " + args.output_dir)
+                    os.system("python " + source_path + " -i " + input_path + " -o " + args.output_dir + " -m cc") ## ARREGRAR ESTE HARCODED
     
 def parse_arguments():
     parser = argparse.ArgumentParser(".")

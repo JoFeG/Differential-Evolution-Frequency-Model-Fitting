@@ -55,7 +55,7 @@ def modelo_cc(model_params, Ts):
     Tb, Tc, Td, H, Kd = model_params
 
     A = np.array([
-        [0,        0,   -1/H], 
+        [0,        0,    -1/H], 
         [Kd/Tb,    0,  -1/Tb], 
         [Kd*Td/Tb, 1, -Tc/Tb]
     ])
