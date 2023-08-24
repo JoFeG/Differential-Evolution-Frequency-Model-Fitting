@@ -22,6 +22,11 @@ def objective_function(x, args):
         sys = mdl.modelo_c(x, Ts)
     elif model == "cc":
         sys = mdl.modelo_cc(x, Ts)
+    ########################################
+    elif model == "A1":
+        sys = mdl.modelo_A1(x, Ts)
+    elif model == "A2":
+        sys = mdl.modelo_A2(x, Ts)
         
     sim_power = P0 * np.repeat(1, real_freq.shape)
     sim = signal.dlsim(sys, sim_power, x0 = real_freq[0])
