@@ -29,6 +29,10 @@ def plot_result(df, args, x, fig_size = (16, 7)):
         sys = mdl.modelo_A1(x, Ts)
     elif model == "A2":
         sys = mdl.modelo_A2(x, Ts)
+    elif model == "B1":
+        sys = mdl.modelo_B1(x, Ts)
+    elif model == "B2":
+        sys = mdl.modelo_B2(x, Ts)
         
     sim_power = P0 * np.repeat(1, real_freq.shape)
     sim = signal.dlsim(sys, sim_power, x0 = real_freq[0])

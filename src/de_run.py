@@ -27,6 +27,10 @@ def objective_function(x, args):
         sys = mdl.modelo_A1(x, Ts)
     elif model == "A2":
         sys = mdl.modelo_A2(x, Ts)
+    elif model == "B1":
+        sys = mdl.modelo_B1(x, Ts)
+    elif model == "B2":
+        sys = mdl.modelo_B2(x, Ts)
         
     sim_power = P0 * np.repeat(1, real_freq.shape)
     sim = signal.dlsim(sys, sim_power, x0 = real_freq[0])
@@ -45,7 +49,7 @@ def main():
     event_time = Ts*(np.sum(df["event"][df["event"]==1].to_numpy())-1)
     
         
-    P0 = df["power"][0] / 1000 # esto en realidad es ΔP_k en la notacion del modelo: que unidades tiene??
+    P0 = -df["power"][0] / 1000 # esto en realidad es ΔP_k en la notacion del modelo: que unidades tiene??
     
     event_freq = df["delta_freq"][df["event"]==1].to_numpy()
     
