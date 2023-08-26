@@ -124,9 +124,8 @@ def modelo_A2(model_params, Ts):
 def modelo_B1(model_params, Ts):
     Tb, Tc, H, Kd = model_params
     
-    ## revisar si esto queda igual con el cambio de signo!
     A = np.array([
-        [Kd*Tc/(H*Tb),      -1/H], 
+        [-Kd*Tc/(H*Tb),     -1/H], 
         [Kd*(Tb-Tc)/Tb**2, -1/Tb]
     ])
     B = np.array([
