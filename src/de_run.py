@@ -107,6 +107,8 @@ def main():
     pre, ext = os.path.splitext(tail)
     
     if args.output_dir != "":
+        if not os.path.isdir(args.output_dir):
+            os.makedirs(args.output_dir)
         ## CONVERGENCE PLOT
         fig, ax1 = plt.subplots(figsize=(16, 7))
         ax1.plot(obj_fun_vavues, label = "Objective function value")
