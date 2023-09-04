@@ -50,10 +50,34 @@ def main():
     
         
     P0 = -df["power"][0] / 1000 # esto en realidad es ΔP_k en la notacion del modelo: que unidades tiene??
+    f0 = df["f0"][0]
     
     event_freq = df["delta_freq"][df["event"]==1].to_numpy()
     
     bounds = [(0.00001, 1000) for i in range(mdl.params[model])] ## CHECK THIS SOLUTION
+    
+    
+    
+    ###### K empirical estimation ######
+    # first step derivative aprox:
+    hat_K = (f0 * P0 / 2) / ((event_freq[1] - event_freq[0]) / Ts) 
+    hat_H = P0 / ((event_freq[1] - event_freq[0]) / Ts) 
+    print(f"\nhat_K = {hat_K}\nhat_H = {hat_H}")
+    
+    eps = .99
+    bounds[-2] = ((1-eps)*hat_H, (1+eps)*hat_H)
+    
+    ###### Kd empirical estimation #####
+    # last M freqs mean:
+    M = 8
+    event_ss_freq = sum(event_freq[-M:] / M)
+    hat_Kd = P0 / event_ss_freq
+    print(f"\nhat_Kd = {hat_Kd}")
+    
+    eps = .7
+    bounds[-1] = ((1-eps)*hat_Kd, (1+eps)*hat_Kd)
+          
+    print(f"\nbounds = {bounds}\n")
     arguments = (model, Ts, P0, event_freq)
     
     if args.parameters != "":
