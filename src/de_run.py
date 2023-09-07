@@ -56,7 +56,7 @@ def main():
     
     bounds = [(0.001, 1000) for i in range(mdl.params[model])] ## CHECK THIS SOLUTION
     
-    use_emp = False
+    use_emp = True #False
     if use_emp:
         ###### K empirical estimation ######
         # first step derivative aprox:
