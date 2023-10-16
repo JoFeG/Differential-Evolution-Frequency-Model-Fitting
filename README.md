@@ -32,7 +32,7 @@ The `PARAMETERS` can be `popsize,mutation,recombination` or `popsize,mutation,re
 |-|-|-|-|-|
 | 15 | .75 | .7 | 1000 | 0.01 |
 
-The model parameters that can be passed as arguments are `HAT_Kd` and HAT_K. Each one can be `value,eps` or just `value`; anything not specified reverts to the default values and estimations from the paper.  
+The model parameters that can be passed as arguments are `HAT_K` and `HAT_Kd`. Each one can be `value,eps` or just `value` (`eps` in the same units as `value` defines an interval for the DE algorithm initialization); anything not specified reverts to the default values and estimations from the paper.  
 
 If `OUTPUT_DIR` is given, result and convergence plot are generated there, and the result object is [pickled](https://docs.python.org/3/library/pickle.html#data-stream-format)
 
