@@ -26,11 +26,12 @@ In all cases, we relabel the constant $H=\frac{f_0}{2K}$ for ease of notation.
 ## Fitting
 
 To run [differential evolution](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.differential_evolution.html) over an aggregated file do:  
-`python src/de_run.py [-h] -i INPUT_FILE [-o OUTPUT_DIR] [-m MODEL] [-p PARAMETERS]`  
+`python src/de_run.py [-h] -i INPUT_FILE [-o OUTPUT_DIR] [-m MODEL] [-K HAT_K] [Kd HAT_Kd] [-p PARAMETERS]`  
 The `PARAMETERS` can be `popsize,mutation,recombination` or `popsize,mutation,recombination,maxiter,tol` if nonspecified; defaults are 
 | `popsize` | `mutation` | `recombination` | `maxiter` | `tol` |
 |-|-|-|-|-|
 | 15 | .75 | .7 | 1000 | 0.01 |
+The model parameters that can be passed as arguments are `HAT_Kd` and HAT_K. Each one can be `value,eps` or just `value`; anything not specified reverts to the default values and estimations from the paper.  
 
 If `OUTPUT_DIR` is given, result and convergence plot are generated there, and the result object is [pickled](https://docs.python.org/3/library/pickle.html#data-stream-format)
 
