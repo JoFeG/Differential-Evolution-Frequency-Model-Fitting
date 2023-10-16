@@ -56,29 +56,45 @@ def main():
     
     bounds = [(0.001, 1000) for i in range(mdl.params[model])] ## CHECK THIS SOLUTION
     
-    use_emp = True #False
-    if use_emp:
+    if args.hat_K != "":
+        hat_K_strs = args.hat_K.split(",")
+        hat_K = float(hat_K_strs[0])
+        if len(hat_K_strs) > 1:
+            EPS = float(hat_K_strs[1])
+        else:
+            EPS = .99 * hat_K    
+    else:
         ###### K empirical estimation ######
         # first step derivative aprox:
         hat_K = (f0 * P0 / 2) / ((event_freq[1] - event_freq[0]) / Ts) 
-        hat_H = P0 / ((event_freq[1] - event_freq[0]) / Ts) 
-        print(f"\nhat_K = {hat_K}\nhat_H = {hat_H}")
-
-        eps = .99
-        bounds[-2] = ((1-eps)*hat_H, (1+eps)*hat_H)
-
+        EPS = .99 * hat_K  
+        
+    K_min = hat_K - EPS
+    K_max = hat_K + EPS    
+    bounds[-2] = ((2/f0)*K_min, (2/f0)*K_max)
+    
+    if args.hat_Kd != "":
+        hat_Kd_strs = args.hat_Kd.split(",")
+        hat_Kd = float(hat_Kd_strs[0])
+        if len(hat_Kd_strs) > 1:
+            EPS = float(hat_Kd_strs[1])
+        else:
+            EPS = .7 * hat_Kd
+    else:
         ###### Kd empirical estimation #####
         # last M freqs mean:
         M = 8
         event_ss_freq = sum(event_freq[-M:] / M)
         hat_Kd = P0 / event_ss_freq
-        print(f"\nhat_Kd = {hat_Kd}")
-
-        eps = .7
-        bounds[-1] = ((1-eps)*hat_Kd, (1+eps)*hat_Kd)
-
-        print(f"\nbounds = {bounds}\n")
-
+        EPS = .7 * hat_Kd
+    
+    Kd_min = hat_Kd - EPS
+    Kd_max = hat_Kd + EPS    
+    bounds[-1] = (Kd_min, Kd_max)
+    
+    print(f"\nbounds_H = {[round(i,4) for i in bounds[-2]]}")
+    print(f"bounds_Kd = {[round(i,4) for i in bounds[-1]] }\n")
+    
     arguments = (model, Ts, P0, event_freq)
     
     if args.parameters != "":
@@ -199,6 +215,20 @@ def parse_arguments():
         action = "store",
         default = "",
         help = "differential optization parameters separated by comas:\npopsize,mutation,recombination,[maxiter,tol]",
+    )
+    parser.add_argument(
+        "-K",
+        "--hat-K",
+        action = "store",
+        default = "",
+        help = "K estimated value",
+    )
+    parser.add_argument(
+        "-Kd",
+        "--hat-Kd",
+        action = "store",
+        default = "",
+        help = "Kd estimated value",
     )
 
     
