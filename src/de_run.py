@@ -210,13 +210,6 @@ def parse_arguments():
         help = "model number for simulation",
     )
     parser.add_argument(
-        "-p",
-        "--parameters",
-        action = "store",
-        default = "",
-        help = "differential optization parameters separated by comas:\npopsize,mutation,recombination,[maxiter,tol]",
-    )
-    parser.add_argument(
         "-K",
         "--hat-K",
         action = "store",
@@ -229,6 +222,13 @@ def parse_arguments():
         action = "store",
         default = "",
         help = "Kd estimated value",
+    )
+    parser.add_argument(
+        "-p",
+        "--parameters",
+        action = "store",
+        default = "",
+        help = "differential optization parameters separated by comas:\npopsize,mutation,recombination,[maxiter,tol]",
     )
 
     
