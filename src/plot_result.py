@@ -14,7 +14,7 @@ def main():
     plot_result(args.input)
     plt.savefig(args.output)
     
-def plot_result(df, args, x, fig_size = (16, 7)):
+def plot_result(df, args, x, fig_size = (16, 7), dt0=0):
     
     model, Ts, P0, real_freq = args
     
@@ -41,7 +41,14 @@ def plot_result(df, args, x, fig_size = (16, 7)):
     real_time = df["time"].to_numpy()
     real_freq = df["delta_freq"].to_numpy()
     
-    event_time = df["time"][df["event"]==1].to_numpy()
+    
+    if dt0 == 0:
+        event_time = df["time"][df["event"]==1].to_numpy()
+    elif dt0 < 0:
+        event_time = df["time"][(df["event"]==1)|(df["event_s"]==1)].to_numpy()
+    elif dt0 > 0:
+        event_time = df["time"][(df["event"]==1)&(df["event_s"]==1)].to_numpy()
+    
     #sim_time = np.arange(event_time[0],event_time[-1],Ts) # Esto genera un bug!
     sim_time = np.linspace(event_time[0],event_time[-1],num=sim_freq.size)
 

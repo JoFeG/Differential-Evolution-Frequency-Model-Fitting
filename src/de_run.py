@@ -46,13 +46,24 @@ def main():
     model = args.model
     df = pd.read_csv(args.input_file)    
     Ts = df["time"][1]
-    event_time = Ts*(np.sum(df["event"][df["event"]==1].to_numpy())-1)
+    
+    
+    dt0 = int(args.delta_t0)
+    
+    # event_time = Ts*(np.sum(df["event"][df["event"]==1].to_numpy())-1)
+    event_time = Ts*(np.sum(df["event"][df["event"]==1].to_numpy())-1-dt0)
     
         
     P0 = -df["power"][0] / 1000 # esto en realidad es ΔP_k en la notacion del modelo: que unidades tiene??
     f0 = df["f0"][0]
     
-    event_freq = df["delta_freq"][df["event"]==1].to_numpy()
+    # event_freq = df["delta_freq"][df["event"]==1].to_numpy()
+    df['event_s'] = df['event'].shift(dt0)
+    if dt0 < 0:
+        event_freq = df["delta_freq"][(df["event"]==1)|(df["event_s"]==1)].to_numpy()
+    else:
+        event_freq = df["delta_freq"][(df["event"]==1)&(df["event_s"]==1)].to_numpy()
+    
     
     bounds = [(0.001, 1000) for i in range(mdl.params[model])] ## CHECK THIS SOLUTION
     
@@ -169,7 +180,7 @@ def main():
         pickle.dump(result, open(output_path, "wb" ) )
 
         ## SAVE RESULT PLOT
-        fig = plot_result(df, arguments, result.x)
+        fig = plot_result(df, arguments, result.x, dt0=dt0)
         plt.text(0, min(event_freq), repr(result), fontsize=10, fontfamily='monospace')
         plt.text(event_time, (max(event_freq)+min(event_freq))/2, f"model = {model}\nTs = {Ts}\nevent_time = {event_time}\n\ntol = {tol}\npopsize = {popsize}\nmutation = {mutation}\nrecombination = {recombination}", fontsize=10, fontfamily='monospace' )
         plt.title(tail)
@@ -222,6 +233,13 @@ def parse_arguments():
         action = "store",
         default = "",
         help = "Kd estimated value",
+    )
+    parser.add_argument(
+        "-dt0",
+        "--delta-t0",
+        action = "store",
+        default = "0",
+        help = "number of steps of sift in the event time start (positive or negative)",
     )
     parser.add_argument(
         "-p",
